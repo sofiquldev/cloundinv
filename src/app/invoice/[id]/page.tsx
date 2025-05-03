@@ -10,13 +10,12 @@ import Link from 'next/link';
 export default function InvoiceViewPage() {
     const params = useParams();
     const router = useRouter();
-    const { invoices, removeInvoice } = useInvoiceStore();
+    const { invoices, deleteInvoice } = useInvoiceStore();
     const invoice = invoices.find((inv) => inv.id === params.id);
 
     const handleDelete = () => {
-        if (window.confirm('Are you sure you want to delete this invoice? This action cannot be undone.')) {
-            removeInvoice(params.id as string);
-            toast.success('Invoice deleted successfully');
+        if (invoice) {
+            deleteInvoice(invoice.id);
             router.push('/');
         }
     };

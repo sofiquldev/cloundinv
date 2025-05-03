@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { validateUser } from '@/data/utils';
 
 export async function POST(request: Request) {
@@ -8,22 +7,25 @@ export async function POST(request: Request) {
         const isValid = await validateUser(username, password);
 
         if (isValid) {
-            // Set auth cookie
-            cookies().set('auth', 'true', {
+            const cookieOptions = {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
-                sameSite: 'strict',
+                sameSite: 'strict' as const,
                 path: '/',
-            });
+            };
             
-            return NextResponse.json({ success: true });
+            const response = NextResponse.json({ success: true });
+            response.cookies.set('auth', 'true', cookieOptions);
+            
+            return response;
         }
 
         return NextResponse.json(
             { success: false, message: 'Invalid credentials' },
             { status: 401 }
         );
-    } catch (error) {
+    } catch (e) {
+        console.error('Login error:', e);
         return NextResponse.json(
             { success: false, message: 'Server error' },
             { status: 500 }

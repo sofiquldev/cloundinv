@@ -28,6 +28,7 @@ export default function LoginPage() {
         toast.error('Invalid credentials');
       }
     } catch (error) {
+      console.error('Login error:', error);
       toast.error('Login failed');
     } finally {
       setIsLoading(false);
@@ -56,6 +57,7 @@ export default function LoginPage() {
         toast.error(data.message || 'Failed to reset password');
       }
     } catch (error) {
+      console.error('Password reset error:', error);
       toast.error('Failed to reset password');
     } finally {
       setIsResetting(false);

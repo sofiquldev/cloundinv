@@ -25,6 +25,7 @@ export default function SettingsForm() {
                     setCompanySettings(data.settings.company);
                 }
             } catch (error) {
+                console.error('Failed to load settings:', error);
                 toast.error('Failed to load settings');
             } finally {
                 setIsLoading(false);
@@ -95,6 +96,7 @@ export default function SettingsForm() {
                 throw new Error(data.message || 'Failed to save settings');
             }
         } catch (error) {
+            console.error('Failed to save settings:', error);
             toast.error('Failed to save settings. Please try again.');
         } finally {
             setIsSaving(false);

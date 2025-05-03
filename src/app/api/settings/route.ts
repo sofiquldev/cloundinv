@@ -6,6 +6,7 @@ export async function GET() {
         const settings = await readSettings();
         return NextResponse.json({ success: true, settings });
     } catch (error) {
+        console.error('Failed to fetch settings:', error);
         return NextResponse.json(
             { success: false, message: 'Failed to fetch settings' },
             { status: 500 }
@@ -19,6 +20,7 @@ export async function POST(request: Request) {
         await writeSettings(settings);
         return NextResponse.json({ success: true });
     } catch (error) {
+        console.error('Failed to save settings:', error);
         return NextResponse.json(
             { success: false, message: 'Failed to save settings' },
             { status: 500 }

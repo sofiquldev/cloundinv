@@ -11,19 +11,6 @@ export interface UserData {
     users: User[];
 }
 
-export interface Settings {
-    company: {
-        name: string;
-        address: string;
-        phone: string;
-        email: string;
-        website: string;
-    };
-    currency: string;
-    language: string;
-    pageSize: string;
-}
-
 export interface InvoiceData {
     invoices: Invoice[];
 }
