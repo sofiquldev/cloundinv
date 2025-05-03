@@ -9,7 +9,7 @@ export async function POST(request: Request) {
         if (isValid) {
             const cookieOptions = {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
+                secure: true, // Always use secure in production for HTTPS
                 sameSite: 'strict' as const,
                 path: '/',
             };
