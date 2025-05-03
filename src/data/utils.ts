@@ -19,6 +19,10 @@ const USER_DATA_PATH = path.join(process.cwd(), 'src/data/users.json');
 const SETTINGS_DATA_PATH = path.join(process.cwd(), 'src/data/settings.json');
 const INVOICES_DATA_PATH = path.join(process.cwd(), 'src/data/invoices.json');
 
+// Constants for authentication
+const ADMIN_USERNAME = 'admin';
+const ADMIN_PASSWORD = 'pass123';
+
 export async function readUserData(): Promise<UserData> {
     try {
         const data = await fs.readFile(USER_DATA_PATH, 'utf-8');
@@ -53,48 +57,23 @@ export async function writeSettings(settings: Settings): Promise<void> {
     }
 }
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export async function updateUserPassword(username: string, newPassword: string): Promise<boolean> {
-    try {
-        const data = await readUserData();
-        const userIndex = data.users.findIndex((user) => user.username === username);
-        if (userIndex === -1) {
-            return false;
-        }
-        data.users[userIndex].password = newPassword;
-        await writeUserData(data);
-        return true;
-    } catch (error) {
-        console.error('Error updating password:', error);
-        return false;
-    }
+    // Since we're using constant credentials, password updates are not supported
+    return false;
 }
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 export async function validateUser(username: string, password: string): Promise<boolean> {
-    try {
-        const data = await readUserData();
-        const user = data.users.find((user) => user.username === username);
-        return user?.password === password;
-    } catch (error) {
-        console.error('Error validating user:', error);
-        return false;
-    }
+    return username === ADMIN_USERNAME && password === ADMIN_PASSWORD;
 }
 
 export async function resetUserPassword(username: string): Promise<string | null> {
-    try {
-        const data = await readUserData();
-        const userIndex = data.users.findIndex((user) => user.username === username);
-        if (userIndex === -1) {
-            return null;
-        }
-        const newPassword = Math.random().toString(36).slice(-8);
-        data.users[userIndex].password = newPassword;
-        await writeUserData(data);
-        return newPassword;
-    } catch (error) {
-        console.error('Error resetting password:', error);
+    if (username !== ADMIN_USERNAME) {
         return null;
     }
+    // Return the default password since we're not using dynamic passwords anymore
+    return ADMIN_PASSWORD;
 }
 
 export async function readInvoices(): Promise<InvoiceData> {
